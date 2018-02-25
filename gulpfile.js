@@ -20,6 +20,9 @@ const cssnano = require('gulp-cssnano');
 // require gulp-imagemin
 const imagemin = require('gulp-imagemin');
 
+// require gulp-cache
+const cache = require('gulp-cache');
+
 // task to compile Sass
 gulp.task('sass', function() {
   return gulp
@@ -76,8 +79,8 @@ gulp.task('useref', () => {
 gulp.task('images', () => {
   return gulp
     .src('app/images/**/*.+(png | jpg | gif | svg)')
-    .pipe(imagemin({
+    .pipe(cache(imagemin({
       interlaced: true
-    }))
+    })))
     .pipe(gulp.dest('dist/images'))
 });
