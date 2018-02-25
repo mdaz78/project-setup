@@ -23,6 +23,12 @@ const imagemin = require('gulp-imagemin');
 // require gulp-cache
 const cache = require('gulp-cache');
 
+// require del
+const del = require('del');
+
+// require run-sequence
+const runSequence = require('run-sequence');
+
 // task to compile Sass
 gulp.task('sass', function() {
   return gulp
@@ -84,3 +90,27 @@ gulp.task('images', () => {
     })))
     .pipe(gulp.dest('dist/images'))
 });
+
+// Cleaning 
+gulp.task('clean', function() {
+  return del.sync('dist').then(function(cb) {
+    return cache.clearAll(cb);
+  });
+})
+
+gulp.task('clean:dist', function() {
+  return del.sync(['dist/**/*', '!dist/images', '!dist/images/**/*']);
+});
+
+// task to build the project for distribution
+gulp.task('build', function (callback){
+  runSequence('clean:dist',
+    ['sass', 'useref', 'images'],
+    callback
+  )
+});
+
+// task to run the project
+gulp.task('default', function (callback) {
+  runSequence(['sass', 'browserSync', 'watch'], callback)
+})
