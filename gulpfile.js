@@ -7,6 +7,9 @@ const sass = require('gulp-sass');
 // require browser sync
 const browserSync = require('browser-sync').create();
 
+// require useref
+const useref = require('gulp-useref');
+
 // task to compile Sass
 gulp.task('sass', function() {
   return gulp
@@ -35,8 +38,8 @@ gulp.task('watch', ['browserSync', 'sass', 'lint-css'], function() {
   gulp.watch('app/js/**/*.+[js | jsx]', browserSync.reload);
 })
 
-// to automate the linting process
-gulp.task('lint-css', function lintCssTask() {
+// task to lint css file 
+gulp.task('lint-css', function () {
   const gulpStylelint = require('gulp-stylelint');
   return gulp
     .src('app/**/*.css')
@@ -46,4 +49,12 @@ gulp.task('lint-css', function lintCssTask() {
       ]
     })
   );
+});
+
+// useref task
+gulp.task('useref', () => {
+  return gulp
+    .src('app/*.html')
+    .pipe(useref())
+    .pipe(gulp.dest('dist'))
 });
