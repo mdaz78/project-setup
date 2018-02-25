@@ -10,6 +10,13 @@ const browserSync = require('browser-sync').create();
 // require useref
 const useref = require('gulp-useref');
 
+// require gulp-unglify and gulp-if
+const uglify = require('gulp-uglify');
+const gulpIf = require('gulp-if');
+
+// require cssnano to minify css
+const cssnano = require('gulp-cssnano');
+
 // task to compile Sass
 gulp.task('sass', function() {
   return gulp
@@ -56,5 +63,8 @@ gulp.task('useref', () => {
   return gulp
     .src('app/*.html')
     .pipe(useref())
+    .pipe(gulpIf('*.js', uglify()))
+    .pipe(gulp.dest('dist'))
+    .pipe(gulpIf('*.css', cssnano()))
     .pipe(gulp.dest('dist'))
 });
