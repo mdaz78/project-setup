@@ -17,6 +17,9 @@ const gulpIf = require('gulp-if');
 // require cssnano to minify css
 const cssnano = require('gulp-cssnano');
 
+// require gulp-imagemin
+const imagemin = require('gulp-imagemin');
+
 // task to compile Sass
 gulp.task('sass', function() {
   return gulp
@@ -67,4 +70,14 @@ gulp.task('useref', () => {
     .pipe(gulp.dest('dist'))
     .pipe(gulpIf('*.css', cssnano()))
     .pipe(gulp.dest('dist'))
+});
+
+// imagemin task
+gulp.task('images', () => {
+  return gulp
+    .src('app/images/**/*.+(png | jpg | gif | svg)')
+    .pipe(imagemin({
+      interlaced: true
+    }))
+    .pipe(gulp.dest('dist/images'))
 });
